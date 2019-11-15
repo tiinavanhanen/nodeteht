@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add a new event</title>
+    <script src="dbserver.js"></script>
+</head>
+<body>
+<form action="http://localhost:8081/api/addevent" method="post">
+    <p>Event name</p>
+    <input type="text" name="eventName" required>
+    <p>Event type</p>
+    <input type="text" name="eventType" required>
+    <p>Event date</p>
+    <input type="date" name="eventDate" required>
+    <p>Event location</p>
+    <input type="text" name="eventLocation" required>
+    <button id="save">Save</button>
+</form>
+<div id="info"></div>
+</body>
+</html>
