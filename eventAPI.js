@@ -66,23 +66,7 @@ app.post('/api/addevent', urlencodedParser, function (req, res) {
             if (result.length > 0) {
                 locationID = result[0].id;
                 console.log("id1.1:" + locationID);
-                var sql3 = "INSERT INTO event (event_name, event_type, location_id) VALUES (?, ?, ?)";
-                console.log("Id2: " + locationID);
-                con.query(sql3, [jsonObj.eventName, jsonObj.eventType, locationID], function (err, result) {
-                    if (result) {
-                        eventID = result.insertId;
-                        var sql4 = "INSERT INTO event_date VALUES (?, ?)";
-                        con.query(sql4, [jsonObj.eventDate, eventID], function (err, result) {
-                            if (result) {
-                                console.log("Tiedot lisätty");
-                            } else {
-                                throw err;
-                            }
-                        });
-                    } else {
-                        throw err;
-                    }
-                });
+                addEvent(jsonObj, locationID);
             } else {
                 var sql2 = "INSERT INTO location (location_name) VALUES (?)";
                 con.query(sql2, [jsonObj.eventLocation], function (err, result) {
@@ -92,23 +76,7 @@ app.post('/api/addevent', urlencodedParser, function (req, res) {
                     } else {
                         throw err;
                     }
-                    var sql3 = "INSERT INTO event (event_name, event_type, location_id) VALUES (?, ?, ?)";
-                    console.log("Id2: " + locationID);
-                    con.query(sql3, [jsonObj.eventName, jsonObj.eventType, locationID], function (err, result) {
-                        if (result) {
-                            eventID = result.insertId;
-                            var sql4 = "INSERT INTO event_date VALUES (?, ?)";
-                            con.query(sql4, [jsonObj.eventDate, eventID], function (err, result) {
-                                if (result) {
-                                    console.log("Tiedot lisätty");
-                                } else {
-                                    throw err;
-                                }
-                            });
-                        } else {
-                            throw err;
-                        }
-                    });
+                    addEvent(jsonObj, locationID);
                 });
             }
         } else {
@@ -117,5 +85,25 @@ app.post('/api/addevent', urlencodedParser, function (req, res) {
         res.end(JSON.stringify(response));
     });
 });
+
+function addEvent(jsonObj, locationID) {
+    var sql3 = "INSERT INTO event (event_name, event_type, location_id) VALUES (?, ?, ?)";
+    console.log("Id2: " + locationID);
+    con.query(sql3, [jsonObj.eventName, jsonObj.eventType, locationID], function (err, result) {
+        if (result) {
+            eventID = result.insertId;
+            var sql4 = "INSERT INTO event_date VALUES (?, ?)";
+            con.query(sql4, [jsonObj.eventDate, eventID], function (err, result) {
+                if (result) {
+                    console.log("Tiedot lisätty");
+                } else {
+                    throw err;
+                }
+            });
+        } else {
+            throw err;
+        }
+    });
+}
 
 module.exports = app;
